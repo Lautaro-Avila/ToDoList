@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ToDo.Repository;
 using ToDo.Servicios.InterfazServicio;
-using ToDo.Servicios;
+using ToDo.Servicios.Extensions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

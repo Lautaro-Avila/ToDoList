@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 using ToDo.Domain.dto;
 using ToDo.Repository;
 using ToDo.Servicios.InterfazServicio;
 
-namespace ToDo.Servicios
+namespace ToDo.Servicios.Extensions
 {
     public class TareasService : ITareasService
 
@@ -22,20 +23,13 @@ namespace ToDo.Servicios
 
         public async Task<bool> AddNewTareaAsync(TareasDTO tareaDTO)
         {
-       
+            bool isValid = ValidateIntegrity.ValidateIntegrityTarea(tareaDTO);
 
-            if (tareaDTO.Estado.ToLower() != "pendiente" && tareaDTO.Estado.ToLower() != "en curso" && tareaDTO.Estado.ToLower() != "finalizado") 
-            {
-                return false;
-            }
-            if (tareaDTO.Titulo == null && tareaDTO.Descripcion == null)
-            {
-                return false;
-            }
+            if (!isValid) return false;
 
             var tarea = new Tarea();
-            tarea.Estado = char.ToUpper(tareaDTO.Estado[0]) + tareaDTO.Estado.Substring(1).ToLower();
-            tarea.Titulo = tareaDTO.Titulo;
+            tarea.Estado = tareaDTO.Estado.ToCapitalizate();
+            tarea.Titulo = tareaDTO.Titulo.ToCapitalizate();
             tarea.Descripcion = tareaDTO.Descripcion;
             tarea.Activo = true;
             tarea.FechaAlta = DateTime.UtcNow;
@@ -55,13 +49,12 @@ namespace ToDo.Servicios
             var tareaMatch = await _todoContext.Tareas.FirstOrDefaultAsync(f => f.Id == id);
             if (tareaMatch == null) return false;
 
-            if (tarea.Estado.ToLower() != "pendiente" && tarea.Estado.ToLower() != "en curso" && tarea.Estado.ToLower() != "finalizado")
-            {
-                return false;
-            }
-           
-            tareaMatch.Estado = char.ToUpper(tarea.Estado[0]) + tarea.Estado.Substring(1).ToLower();
-            tareaMatch.Titulo = tarea.Titulo;
+           bool isValid = ValidateIntegrity.ValidateIntegrityTarea(tarea);
+
+            if (!isValid) return false;
+
+            tareaMatch.Estado = tarea.Estado.ToCapitalizate();
+            tareaMatch.Titulo = tarea.Titulo.ToCapitalizate();
             tareaMatch.Descripcion = tarea.Descripcion;
             tareaMatch.FechaModificacion = DateTime.Now;
 
