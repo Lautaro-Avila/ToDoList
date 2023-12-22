@@ -6,13 +6,11 @@ namespace ToDo.Servicios
     {
         public static bool ValidateIntegrityTarea(TareasDTO tarea)
         {
+            
             if (string.IsNullOrEmpty(tarea.Estado))
             {
                 tarea.Estado = "pendiente";
-            }
-            if (string.IsNullOrEmpty(tarea.Titulo) || (string.IsNullOrEmpty(tarea.Descripcion)))
-            {
-                return false;
+                return true;
             }
             if (tarea.Estado.ToLower() != "pendiente" && tarea.Estado.ToLower() != "en curso" && tarea.Estado.ToLower() != "finalizado")
             {

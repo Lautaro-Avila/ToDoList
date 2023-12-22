@@ -14,7 +14,7 @@ public class TareasController : ControllerBase
         _tareasService = tareasService;
     }
 
-    [HttpGet("Listar todas las tareas")]
+    [HttpGet("tareas")]
     public async Task<ActionResult<List<Tarea>>> GetAllTareas()
     {
      
@@ -23,7 +23,7 @@ public class TareasController : ControllerBase
   
     }
 
-    [HttpPost("Agregar nueva tarea")]
+    [HttpPost("add")]
     public async Task<ActionResult<bool>> AddNewTarea([FromBody] TareasDTO tareaDTO)
     {
      
@@ -39,7 +39,7 @@ public class TareasController : ControllerBase
  
     }
     
-    [HttpPut("{id} | Modificar tarea")]
+    [HttpPut("update")]
     public async Task<ActionResult<bool>> UpdateTareas(int id, [FromBody] TareasDTO tareaDTO)
     {
       
@@ -55,7 +55,7 @@ public class TareasController : ControllerBase
  
     }
 
-    [HttpPut("{id} | Modificar estado de una tarea")]
+    [HttpPut("update/estado")]
     public async Task<ActionResult<bool>> UpdateEstado(int id, [FromBody] string nuevoEstado)
     {
         
@@ -78,7 +78,7 @@ public class TareasController : ControllerBase
   
     }
 
-    [HttpDelete("{id} | Eliminar tarea")]
+    [HttpDelete("delete")]
     public async Task<ActionResult<bool>> DeleteTareas(int id)
     {
      
@@ -95,10 +95,7 @@ public class TareasController : ControllerBase
  
     }
 
-
-
-
-    [HttpGet("Listar tareas activas")]
+    [HttpGet("tareas/active")]
 
     public async Task<ActionResult<List<Tarea>>> GetAllNoDeleteAsync()
     {
@@ -109,7 +106,7 @@ public class TareasController : ControllerBase
 
     }
 
-    [HttpGet("Listar tareas eliminadas")]
+    [HttpGet("tareas/inactive")]
     public async Task<ActionResult<List<Tarea>>> GetAllDeleteAsync()
     {
       
@@ -118,5 +115,8 @@ public class TareasController : ControllerBase
         
   
     }
+
+
+
 
 }
